@@ -1,37 +1,30 @@
 import type { Task } from '@prisma/client'
-
 import { tasks, task, createTask, updateTask, deleteTask } from './tasks'
 import type { StandardScenario } from './tasks.scenarios'
 
-// Generated boilerplate tests do not account for all circumstances
-// and can fail without adjustments, e.g. Float.
-//           Please refer to the RedwoodJS Testing Docs:
-//       https://redwoodjs.com/docs/testing#testing-services
-// https://redwoodjs.com/docs/testing#jest-expect-type-considerations
-
-describe('tasks', () => {
-  scenario('returns all tasks', async (scenario: StandardScenario) => {
+describe('[e2e] tasks', () => {
+  scenario('[e2e] returns all tasks', async (scenario: StandardScenario) => {
     const result = await tasks()
 
     expect(result.length).toEqual(Object.keys(scenario.task).length)
   })
 
-  scenario('returns a single task', async (scenario: StandardScenario) => {
+  scenario('[e2e] returns a single task', async (scenario: StandardScenario) => {
     const result = await task({ id: scenario.task.one.id })
 
     expect(result).toEqual(scenario.task.one)
   })
 
-  scenario('creates a task', async () => {
+  scenario('[e2e] creates a task', async () => {
     const result = await createTask({
-      input: { description: 'String', updatedAt: '2025-01-25T15:30:05.786Z' },
+      input: { description: 'String', status: false },
     })
 
     expect(result.description).toEqual('String')
-    expect(result.updatedAt).toEqual(new Date('2025-01-25T15:30:05.786Z'))
+    expect(result.status).toEqual(false)
   })
 
-  scenario('updates a task', async (scenario: StandardScenario) => {
+  scenario('[e2e] updates a task', async (scenario: StandardScenario) => {
     const original = (await task({ id: scenario.task.one.id })) as Task
     const result = await updateTask({
       id: original.id,
@@ -41,7 +34,17 @@ describe('tasks', () => {
     expect(result.description).toEqual('String2')
   })
 
-  scenario('deletes a task', async (scenario: StandardScenario) => {
+  scenario('[e2e] updates a task status', async (scenario: StandardScenario) => {
+    const original = (await task({ id: scenario.task.one.id })) as Task
+    const result = await updateTask({
+      id: original.id,
+      input: { description: original.description, status: !original.status },
+    })
+
+    expect(result.status).toEqual(!original.status)
+  })
+
+  scenario('[e2e] deletes a task', async (scenario: StandardScenario) => {
     const original = (await deleteTask({ id: scenario.task.one.id })) as Task
     const result = await task({ id: original.id })
 

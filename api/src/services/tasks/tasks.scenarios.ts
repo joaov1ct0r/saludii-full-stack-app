@@ -4,10 +4,10 @@ import type { ScenarioData } from '@redwoodjs/testing/api'
 export const standard = defineScenario<Prisma.TaskCreateArgs>({
   task: {
     one: {
-      data: { description: 'String', updatedAt: '2025-01-25T15:30:05.808Z' },
+      data: { description: 'String', status: false },
     },
     two: {
-      data: { description: 'String', updatedAt: '2025-01-25T15:30:05.808Z' },
+      data: { description: 'String', status: false },
     },
   },
 })
