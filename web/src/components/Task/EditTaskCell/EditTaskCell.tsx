@@ -14,6 +14,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import TaskForm from 'src/components/Task/TaskForm'
+import { useWsContext } from 'src/contexts/wsContext'
 
 export const QUERY: TypedDocumentNode<EditTaskById> = gql`
   query EditTaskById($id: Int!) {
@@ -49,9 +50,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ task }: CellSuccessProps<EditTaskById>) => {
+  const { sendTask } = useWsContext()
   const [updateTask, { loading, error }] = useMutation(UPDATE_TASK_MUTATION, {
     onCompleted: () => {
       toast.success('Task updated')
+      sendTask('task')
       navigate(routes.tasks())
     },
     onError: (error) => {

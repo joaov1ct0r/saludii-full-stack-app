@@ -10,6 +10,7 @@ import type { TypedDocumentNode } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import TaskForm from 'src/components/Task/TaskForm'
+import { useWsContext } from 'src/contexts/wsContext'
 
 const CREATE_TASK_MUTATION: TypedDocumentNode<
   CreateTaskMutation,
@@ -23,9 +24,11 @@ const CREATE_TASK_MUTATION: TypedDocumentNode<
 `
 
 const NewTask = () => {
+  const { sendTask } = useWsContext()
   const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
     onCompleted: () => {
       toast.success('Task created')
+      sendTask('task')
       navigate(routes.tasks())
     },
     onError: (error) => {

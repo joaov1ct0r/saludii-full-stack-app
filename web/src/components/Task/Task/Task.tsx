@@ -9,6 +9,7 @@ import { useMutation } from '@redwoodjs/web'
 import type { TypedDocumentNode } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import { useWsContext } from 'src/contexts/wsContext'
 import { checkboxInputTag, timeTag } from 'src/lib/formatters'
 
 const DELETE_TASK_MUTATION: TypedDocumentNode<
@@ -27,9 +28,11 @@ interface Props {
 }
 
 const Task = ({ task }: Props) => {
+  const { sendTask } = useWsContext()
   const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
     onCompleted: () => {
       toast.success('Task deleted')
+      sendTask('task')
       navigate(routes.tasks())
     },
     onError: (error) => {

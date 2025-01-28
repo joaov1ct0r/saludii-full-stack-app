@@ -3,11 +3,11 @@ import type { ReactNode } from 'react'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
+import WsContextProvider from 'src/contexts/wsContext'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 
 import './index.css'
 import './scaffold.css'
-
 
 interface AppProps {
   children?: ReactNode
@@ -16,7 +16,9 @@ interface AppProps {
 const App = ({ children }: AppProps) => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <RedwoodApolloProvider>{children}</RedwoodApolloProvider>
+      <RedwoodApolloProvider>
+        <WsContextProvider>{children}</WsContextProvider>
+      </RedwoodApolloProvider>
     </RedwoodProvider>
   </FatalErrorBoundary>
 )
