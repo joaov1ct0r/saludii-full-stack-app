@@ -18,7 +18,7 @@ const WsContextProvider: React.FC<Props> = ({ children }) => {
   const ws = useRef<Socket>()
 
   useEffect(() => {
-    const socket = io('http://localhost:3000/ws')
+    const socket = io('http://localhost:3000/')
 
     socket.on('notification', () => {
       toast.success('Tasks updated')
