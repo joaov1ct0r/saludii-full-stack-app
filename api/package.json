@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@redwoodjs/api": "8.4.4",
-    "@redwoodjs/graphql-server": "8.4.4"
+    "@fastify/websocket": "^10.0.0",
+    "@redwoodjs/api": "8.5.0",
+    "@redwoodjs/api-server": "8.5.0",
+    "@redwoodjs/graphql-server": "8.5.0",
+    "@redwoodjs/realtime": "8.5.0",
+    "fastify": "^5",
+    "ioredis": "^5",
+    "socket.io": "^4.8.1"
   }
 }
