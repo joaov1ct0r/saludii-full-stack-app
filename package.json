@@ -3,12 +3,14 @@
   "workspaces": {
     "packages": [
       "api",
-      "web"
+      "web",
+      "ws"
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "8.4.4",
-    "@redwoodjs/project-config": "8.4.4"
+    "@redwoodjs/core": "8.5.0",
+    "@redwoodjs/project-config": "8.5.0",
+    "@types/node": "^22.12.0"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
