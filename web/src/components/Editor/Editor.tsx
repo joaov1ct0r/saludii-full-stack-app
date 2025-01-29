@@ -33,7 +33,7 @@ export default function Editor({ defaultValue, onEditorUpdate }: EditorProps) {
           'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
       },
     },
-    autofocus: true,
+    autofocus: false,
     extensions: [
       StarterKit,
       Paragraph,

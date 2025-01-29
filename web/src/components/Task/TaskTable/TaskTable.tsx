@@ -8,11 +8,9 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import type { DeleteTaskMutationVariables } from 'types/graphql'
 
 import { routes } from '@redwoodjs/router'
 
-import ButtonI from 'src/components/Buttons/ButtonI'
 import LinkButton from 'src/components/Buttons/LinkButton'
 import StackButton from 'src/components/Buttons/StackButton'
 import Editor from 'src/components/Editor/Editor'
@@ -22,10 +20,9 @@ import TaskTableRow from './TaskTableRow'
 
 interface TaskTableProps {
   tasks: Task[]
-  onDeleteTask: (id: DeleteTaskMutationVariables['id']) => void
 }
 
-export default function TaskTable({ tasks, onDeleteTask }: TaskTableProps) {
+export default function TaskTable({ tasks }: TaskTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -70,19 +67,6 @@ export default function TaskTable({ tasks, onDeleteTask }: TaskTableProps) {
                       variant={'contained'}
                       to={routes.task({ id: task.id })}
                       title={'Details'}
-                    />
-
-                    <LinkButton
-                      variant={'contained'}
-                      to={routes.editTask({ id: task.id })}
-                      title={'Edit'}
-                    />
-
-                    <ButtonI
-                      variant={'contained'}
-                      title={'Delete'}
-                      color={'error'}
-                      onClick={() => onDeleteTask(task.id)}
                     />
                   </StackButton>
                 </TableCell>

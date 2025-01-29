@@ -14,6 +14,10 @@ interface ButtonIProps {
     | 'warning'
 }
 
-export default function ButtonI({ title, ...rest }: ButtonIProps) {
-  return <Button {...rest}>{title}</Button>
+export default function ButtonI({ title, onClick, ...rest }: ButtonIProps) {
+  return (
+    <Button type={'button'} onClick={onClick} {...rest}>
+      {title}
+    </Button>
+  )
 }

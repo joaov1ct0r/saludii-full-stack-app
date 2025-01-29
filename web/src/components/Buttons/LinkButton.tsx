@@ -9,14 +9,5 @@ interface LinkButtonProps {
 }
 
 export default function LinkButton({ title, ...rest }: LinkButtonProps) {
-  return (
-    <Link {...rest}>
-      {title}
-      {/*
-      <Button href="#text-buttons" {...rest}>
-        {title}
-      </Button>
-    */}
-    </Link>
-  )
+  return <Link {...rest}>{title}</Link>
 }

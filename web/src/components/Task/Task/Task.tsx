@@ -4,11 +4,13 @@ import type {
   FindTaskById,
 } from 'types/graphql'
 
-import { Link, routes, navigate } from '@redwoodjs/router'
+import { routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import type { TypedDocumentNode } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
+import ButtonI from 'src/components/Buttons/ButtonI'
+import StackButton from 'src/components/Buttons/StackButton'
 import { useWsContext } from 'src/contexts/wsContext'
 import { checkboxInputTag, timeTag } from 'src/lib/formatters'
 
@@ -31,7 +33,6 @@ const Task = ({ task }: Props) => {
   const { sendTask } = useWsContext()
   const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
     onCompleted: () => {
-      toast.success('Task deleted')
       sendTask('task')
       navigate(routes.tasks())
     },
@@ -80,19 +81,20 @@ const Task = ({ task }: Props) => {
         </table>
       </div>
       <nav className="rw-button-group">
-        <Link
-          to={routes.editTask({ id: task.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <button
-          type="button"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(task.id)}
-        >
-          Delete
-        </button>
+        <StackButton direction={'row'} spacing={2}>
+          <ButtonI
+            variant={'contained'}
+            title={'Edit'}
+            color={'warning'}
+            onClick={() => navigate(routes.editTask({ id: task.id }))}
+          />
+          <ButtonI
+            variant={'contained'}
+            title={'Delete'}
+            color={'error'}
+            onClick={() => onDeleteClick(task.id)}
+          />
+        </StackButton>
       </nav>
     </>
   )

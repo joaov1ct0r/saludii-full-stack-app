@@ -1,49 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { closestCorners, DndContext } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import type {
-  DeleteTaskMutation,
-  DeleteTaskMutationVariables,
-  FindTasks,
-} from 'types/graphql'
+import { Checkbox } from '@mui/material'
+import type { FindTasks } from 'types/graphql'
 
-import { useMutation } from '@redwoodjs/web'
-import type { TypedDocumentNode } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
-
-import { QUERY } from 'src/components/Task/TasksCell'
 import TaskTable from 'src/components/Task/TaskTable/TaskTable'
 
-const DELETE_TASK_MUTATION: TypedDocumentNode<
-  DeleteTaskMutation,
-  DeleteTaskMutationVariables
-> = gql`
-  mutation DeleteTaskMutation($id: Int!) {
-    deleteTask(id: $id) {
-      id
-    }
-  }
-`
-
 const TasksList = ({ tasks }: FindTasks) => {
-  const [ttasks, setTasks] = useState([...tasks])
-  const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
-    onCompleted: () => {
-      toast.success('Task deleted')
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-    refetchQueries: [{ query: QUERY }],
-    awaitRefetchQueries: true,
-  })
-
-  const onDeleteClick = (id: DeleteTaskMutationVariables['id']) => {
-    if (confirm('Are you sure you want to delete task ' + id + '?')) {
-      deleteTask({ variables: { id } })
-    }
-  }
+  const [filterTasks, setFilterTasks] = useState<boolean>(false)
+  const [ttasks, setTasks] = useState(tasks)
 
   const getTaskPos = (id) => ttasks.findIndex((task) => task.id === id)
 
@@ -60,9 +26,21 @@ const TasksList = ({ tasks }: FindTasks) => {
     })
   }
 
+  useEffect(() => {
+    if (filterTasks) {
+      const filteredTasks = ttasks.filter((task) => task.status === true)
+      setTasks(filteredTasks)
+    } else {
+      setTasks(tasks)
+    }
+  }, [filterTasks, ttasks, tasks])
+
   return (
     <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-      <TaskTable tasks={ttasks} onDeleteTask={onDeleteClick} />
+      <h5>Filter by completed tasks</h5>
+      <Checkbox onClick={() => setFilterTasks((prev) => !prev)} />
+
+      <TaskTable tasks={ttasks} />
     </DndContext>
   )
 }
