@@ -46,6 +46,7 @@ export default function TaskTable({ tasks }: TaskTableProps) {
                 <TableCell align="center">
                   {
                     <Editor
+                      autoFocus={false}
                       defaultValue={task.description}
                       onEditorUpdate={() => null}
                       key={task.id}

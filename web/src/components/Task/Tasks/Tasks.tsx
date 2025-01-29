@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { closestCorners, DndContext } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { Checkbox } from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
 import type { FindTasks } from 'types/graphql'
 
 import TaskTable from 'src/components/Task/TaskTable/TaskTable'
@@ -37,8 +39,12 @@ const TasksList = ({ tasks }: FindTasks) => {
 
   return (
     <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-      <h5>Filter by completed tasks</h5>
-      <Checkbox onClick={() => setFilterTasks((prev) => !prev)} />
+      <FormGroup>
+        <FormControlLabel
+          control={<Checkbox onClick={() => setFilterTasks((prev) => !prev)} />}
+          label={'Filter by completed tasks'}
+        />
+      </FormGroup>
 
       <TaskTable tasks={ttasks} />
     </DndContext>

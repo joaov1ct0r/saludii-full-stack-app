@@ -18,9 +18,14 @@ import StarterKit from '@tiptap/starter-kit'
 interface EditorProps {
   defaultValue: string
   onEditorUpdate: (data: string) => void
+  autoFocus: boolean
 }
 
-export default function Editor({ defaultValue, onEditorUpdate }: EditorProps) {
+export default function Editor({
+  autoFocus,
+  defaultValue,
+  onEditorUpdate,
+}: EditorProps) {
   const handleEditorUpdate = (props: EditorEvents['update']) => {
     onEditorUpdate(props.editor.getHTML())
   }
@@ -33,7 +38,7 @@ export default function Editor({ defaultValue, onEditorUpdate }: EditorProps) {
           'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none',
       },
     },
-    autofocus: false,
+    autofocus: autoFocus,
     extensions: [
       StarterKit,
       Paragraph,

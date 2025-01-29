@@ -51,15 +51,8 @@ const TaskForm = (props: TaskFormProps) => {
           Description
         </Label>
 
-        {/*<TextField
-          name="description"
-          defaultValue={props.task?.description}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />*/}
-
         <Editor
+          autoFocus={true}
           defaultValue={props.task?.description}
           onEditorUpdate={onEditorData}
         />
