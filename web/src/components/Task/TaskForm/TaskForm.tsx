@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import type { EditTaskById, UpdateTaskInput } from 'types/graphql'
 
 import type { RWGqlError } from '@redwoodjs/forms'
@@ -6,10 +8,11 @@ import {
   FormError,
   FieldError,
   Label,
-  TextField,
   CheckboxField,
   Submit,
 } from '@redwoodjs/forms'
+
+import Editor from 'src/components/Editor/Editor'
 
 type FormTask = NonNullable<EditTaskById['task']>
 
@@ -21,7 +24,12 @@ interface TaskFormProps {
 }
 
 const TaskForm = (props: TaskFormProps) => {
+  const [editorData, setEditorData] = useState('')
+
+  const onEditorData = (data: string) => setEditorData(data)
+
   const onSubmit = (data: FormTask) => {
+    data.description = editorData
     props.onSave(data, props?.task?.id)
   }
 
@@ -43,12 +51,17 @@ const TaskForm = (props: TaskFormProps) => {
           Description
         </Label>
 
-        <TextField
+        {/*<TextField
           name="description"
           defaultValue={props.task?.description}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
+        />*/}
+
+        <Editor
+          defaultValue={props.task?.description}
+          onEditorUpdate={onEditorData}
         />
 
         <FieldError name="description" className="rw-field-error" />

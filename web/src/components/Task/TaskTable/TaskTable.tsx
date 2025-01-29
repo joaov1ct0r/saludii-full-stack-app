@@ -15,6 +15,7 @@ import { routes } from '@redwoodjs/router'
 import ButtonI from 'src/components/Buttons/ButtonI'
 import LinkButton from 'src/components/Buttons/LinkButton'
 import StackButton from 'src/components/Buttons/StackButton'
+import Editor from 'src/components/Editor/Editor'
 import { Task } from 'src/types/Task'
 
 import TaskTableRow from './TaskTableRow'
@@ -45,7 +46,15 @@ export default function TaskTable({ tasks, onDeleteTask }: TaskTableProps) {
                 <TableCell align="center" component="th" scope="row">
                   {task.id}
                 </TableCell>
-                <TableCell align="center">{task.description}</TableCell>
+                <TableCell align="center">
+                  {
+                    <Editor
+                      defaultValue={task.description}
+                      onEditorUpdate={() => null}
+                      key={task.id}
+                    />
+                  }
+                </TableCell>
                 <TableCell align="center">
                   {task.status === true ? 'Completed' : 'Incomplete'}
                 </TableCell>

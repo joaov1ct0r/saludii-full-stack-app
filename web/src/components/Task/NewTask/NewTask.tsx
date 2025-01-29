@@ -27,7 +27,6 @@ const NewTask = () => {
   const { sendTask } = useWsContext()
   const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
     onCompleted: () => {
-      toast.success('Task created')
       sendTask('task')
       navigate(routes.tasks())
     },
