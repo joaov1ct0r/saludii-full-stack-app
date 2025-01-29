@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -15,6 +16,8 @@ import ButtonI from 'src/components/Buttons/ButtonI'
 import LinkButton from 'src/components/Buttons/LinkButton'
 import StackButton from 'src/components/Buttons/StackButton'
 import { Task } from 'src/types/Task'
+
+import TaskTableRow from './TaskTableRow'
 
 interface TaskTableProps {
   tasks: Task[]
@@ -36,45 +39,47 @@ export default function TaskTable({ tasks, onDeleteTask }: TaskTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tasks.map((task) => (
-            <TableRow key={task.id}>
-              <TableCell align="center" component="th" scope="row">
-                {task.id}
-              </TableCell>
-              <TableCell align="center">{task.description}</TableCell>
-              <TableCell align="center">
-                {task.status === true ? 'Completed' : 'Incomplete'}
-              </TableCell>
-              <TableCell align="center">
-                {new Date(task.createdAt).toLocaleString()}
-              </TableCell>
-              <TableCell align="center">
-                {new Date(task.updatedAt).toLocaleString()}
-              </TableCell>
-              <TableCell align="left">
-                <StackButton direction={'row'} spacing={2}>
-                  <LinkButton
-                    variant={'contained'}
-                    to={routes.task({ id: task.id })}
-                    title={'Details'}
-                  />
+          <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+            {tasks.map((task) => (
+              <TaskTableRow task={task} key={task.id}>
+                <TableCell align="center" component="th" scope="row">
+                  {task.id}
+                </TableCell>
+                <TableCell align="center">{task.description}</TableCell>
+                <TableCell align="center">
+                  {task.status === true ? 'Completed' : 'Incomplete'}
+                </TableCell>
+                <TableCell align="center">
+                  {new Date(task.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell align="center">
+                  {new Date(task.updatedAt).toLocaleString()}
+                </TableCell>
+                <TableCell align="left">
+                  <StackButton direction={'row'} spacing={2}>
+                    <LinkButton
+                      variant={'contained'}
+                      to={routes.task({ id: task.id })}
+                      title={'Details'}
+                    />
 
-                  <LinkButton
-                    variant={'contained'}
-                    to={routes.editTask({ id: task.id })}
-                    title={'Edit'}
-                  />
+                    <LinkButton
+                      variant={'contained'}
+                      to={routes.editTask({ id: task.id })}
+                      title={'Edit'}
+                    />
 
-                  <ButtonI
-                    variant={'contained'}
-                    title={'Delete'}
-                    color={'error'}
-                    onClick={() => onDeleteTask(task.id)}
-                  />
-                </StackButton>
-              </TableCell>
-            </TableRow>
-          ))}
+                    <ButtonI
+                      variant={'contained'}
+                      title={'Delete'}
+                      color={'error'}
+                      onClick={() => onDeleteTask(task.id)}
+                    />
+                  </StackButton>
+                </TableCell>
+              </TaskTableRow>
+            ))}
+          </SortableContext>
         </TableBody>
       </Table>
     </TableContainer>

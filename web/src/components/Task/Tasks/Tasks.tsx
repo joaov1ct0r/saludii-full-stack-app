@@ -1,3 +1,7 @@
+import { useState } from 'react'
+
+import { closestCorners, DndContext } from '@dnd-kit/core'
+import { arrayMove } from '@dnd-kit/sortable'
 import type {
   DeleteTaskMutation,
   DeleteTaskMutationVariables,
@@ -23,6 +27,7 @@ const DELETE_TASK_MUTATION: TypedDocumentNode<
 `
 
 const TasksList = ({ tasks }: FindTasks) => {
+  const [ttasks, setTasks] = useState([...tasks])
   const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
     onCompleted: () => {
       toast.success('Task deleted')
@@ -40,7 +45,26 @@ const TasksList = ({ tasks }: FindTasks) => {
     }
   }
 
-  return <TaskTable tasks={tasks} onDeleteTask={onDeleteClick} />
+  const getTaskPos = (id) => ttasks.findIndex((task) => task.id === id)
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event
+
+    if (active.id === over.id) return
+
+    setTasks((prev) => {
+      const originalPos = getTaskPos(active.id)
+      const newPos = getTaskPos(over.id)
+
+      return arrayMove(prev, originalPos, newPos)
+    })
+  }
+
+  return (
+    <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      <TaskTable tasks={ttasks} onDeleteTask={onDeleteClick} />
+    </DndContext>
+  )
 }
 
 export default TasksList
